@@ -1,0 +1,204 @@
+package zwds
+
+//import (
+//	"fmt"
+//)
+
+
+//安岁前
+func (uilx *UILIUX) dSuiQianX(nianZhi string) {
+	for k, v := range 岁前系 {
+		id := 岁前系表[indexZhi(nianZhi)][k]
+		uilx[id] = append(uilx[id], v)
+	}
+}
+
+//安将前
+func (uilx *UILIUX) eJiangQianX(nianZhi string) {
+	var id int
+	switch nianZhi {
+	case "寅", "午", "戌":
+		id = 0
+	case "申", "子", "辰":
+		id = 1
+	case "巳", "酉", "丑":
+		id = 2
+	case "亥", "卯", "未":
+		id = 3
+	}
+	for k, v := range 将前系 {
+		uid := 将前系表[id][k]
+		uilx[uid] = append(uilx[uid], v)
+	}
+}
+
+//安博士
+func (uilx *UILIUX) fBoShiX(nianGan string, sr HeroInfo) {
+	id := 流干系表[indexGan(nianGan)][0]
+	var uid int
+	for k, v := range 博士系 {
+		switch sr.性别 {
+		case "阳男", "阴女":
+			uid = correctIndex(id + k)
+		case "阳女", "阴男":
+			uid = correctIndex(id - k)
+		}
+		uilx[uid] = append(uilx[uid], v)
+	}
+}
+
+// indexZhuX - 用于安四化.xing在gid宫位的对应序列号.
+func indexZhuX(gid int, xing string, ui UIZHUX) int {
+	xid := 0
+	//因为主星从id=5开始的, 回看UIZHUX结构
+	for k, v := range ui[gid][5:] {
+		if v == xing {
+			xid = k
+			break
+		}
+	}
+	return xid / 2
+}
+
+//安四化,gan - 生年干, 大限宫干,  年月日时 干.
+func (uilx *UILIUX) aHuaGanX(gan string, sr HeroInfo, xg XGINDEX, ui UIZHUX) {
+	for k, _ := range uilx {
+		uilx[k] = make([]string, 6)
+	} //6 根据GUI制定的.
+	idGan := indexGan(gan)
+	var x string
+	for k, v := range 化干系 {
+		switch sr.四化 {
+		case "中州":
+			x = 中州化干表[idGan][k]
+		case "全书":
+			x = 全书化干表[idGan][k]
+		}
+		gid, _ := xg[x]
+		xid := indexZhuX(gid, x, ui)
+		uilx[gid][xid] = v
+	}
+}
+
+//安流干系
+func (uilx *UILIUX) bLiuGanX(nianGan string) {
+	idGan := indexGan(nianGan)
+
+	for k, v := range 流干系 {
+		uilx[流干系表[idGan][k]] = append(uilx[流干系表[idGan][k]], v)
+		//		for id := 1; id < 13; id++ {
+		//			if id == 流干系表[idGan][k] {
+		//				uilx[id] = append(uilx[id], v)
+		//			} else {
+		//				uilx[id] = append(uilx[id], "")
+		//			}
+		//		}
+	}
+}
+
+//安流支系
+func (uilx *UILIUX) cLiuZhiX(nianZhi string) {
+	idZhi := indexZhi(nianZhi)
+	for k, v := range 流支系 {
+		uilx[流支系表[idZhi][k]] = append(uilx[流支系表[idZhi][k]], v)
+		//		for id := 1; id < 13; id++ {
+		//			if id == 流支系表[idZhi][k] {
+		//				uilx[id] = append(uilx[id], v)
+		//			} else {
+		//				uilx[id] = append(uilx[id], "")
+		//			}
+		//		}
+	}
+}
+
+//gXiaoXian - 生日的年支定1岁所在宫位, 定小限, 虚岁(长生年为1岁)
+func (uilx *UILIUX) gXiaoXian(liuNian int, hi HeroInfo) {
+	var idZero, idXiaoXian int
+	switch hi.年支 {
+	case "寅", "午", "戌":
+		idZero = 辰
+	case "申", "子", "辰":
+		idZero = 戌
+	case "巳", "酉", "丑":
+		idZero = 未
+	case "亥", "卯", "未":
+		idZero = 丑
+	}
+	switch hi.性别 {
+	case "阳男", "阴男":
+		idXiaoXian = correctIndex(idZero + liuNian - hi.公年)
+	case "阳女", "阴女":
+		idXiaoXian = correctIndex(idZero - liuNian + hi.公年)
+	}
+	println(idZero, hi.性别, liuNian, hi.公年, idXiaoXian)
+	for id := 1; id < 13; id++ {
+		if id == idXiaoXian {
+			uilx[id] = append(uilx[id], "小限")
+		} else {
+			uilx[id] = append(uilx[id], "")
+		}
+	}
+}
+
+//
+
+// uid指流运命宫所在宫位, liulei 指,大运,还是流年....
+func (uilx *UILIUX) iGongMingLx(uid int, liuLei string) {
+	for id := 0; id < 12; id++ {
+		idx := correctIndex(uid + id)
+		uilx[idx] = append(uilx[idx], liuLei, 宫名[id])
+	}
+}
+
+//func ()
+////////////////////////////////////////////////////////////////////////////////
+// anLiuYueX -??
+func (uilx *UILIUX) anLiuYueX(liuNian, liuYue int, hi HeroInfo) {
+	ziNianDouJun := 子年斗君表[hi.农月-1][hi.农时-1]
+	ganZhi := []rune(yearGanZhi(liuNian))
+	nianGan, nianZhi := string(ganZhi[0]), string(ganZhi[1])
+}
+
+//??
+// 四化-"流年"-宫名-小限-岁前-将前-博士-流干系-流支系
+//anLiuNianX - nianGan,nianZhi 为流年(公历)的干支. HeroInfo.性别,
+func (uilx *UILIUX) anLiuNianX(liuNian int, hi HeroInfo, xg XGINDEX, ui UIZHUX) {
+	ganZhi := []rune(yearGanZhi(liuNian))
+	nianGan, nianZhi := string(ganZhi[0]), string(ganZhi[1])
+	uilx.aHuaGanX(nianGan, hi, xg, ui)
+	uid := 岁前系表[indexZhi(nianZhi)][0] //跟岁建同
+	uilx.iGongMingLx(uid, "流年")
+	uilx.gXiaoXian(liuNian, hi)
+	uilx.dSuiQianX(nianZhi)
+	uilx.eJiangQianX(nianZhi)
+	uilx.fBoShiX(nianGan, hi)
+	uilx.bLiuGanX(nianGan)
+	uilx.cLiuZhiX(nianZhi)
+}
+
+//anDaYunX - 大限命宫宫干,宫支(只取流马)
+func (uilx *UILIUX) anDaYunX(daXian int, hi HeroInfo, xg XGINDEX, ui UIZHUX) {
+	var uid int
+	switch hi.性别 {
+	case "阳男", "阴女":
+		uid = correctIndex(xg["命宫"] + daXian - 1) //daXian(1-12)
+	case "阳女", "阴男":
+		uid = correctIndex(xg["命宫"] - daXian + 1)
+	}
+	daXianGan := ui[uid][0]
+	daXianZhi := ui[uid][1]
+	uilx.aHuaGanX(daXianGan, hi, xg, ui)
+	uilx.iGongMingLx(uid, "大运")
+	uilx.bLiuGanX(daXianGan)
+	id := 流支系表[indexZhi(daXianZhi)][0]
+	uilx[id] = append(uilx[id], 流支系[0])
+}
+
+//anBenMingLX - 本命四化星; 生年干,四化,以及主星所在宫位;
+func (uilx *UILIUX) anBenMingLX(hi HeroInfo, xg XGINDEX, ui UIZHUX) {
+	uilx.aHuaGanX(hi.年干, hi, xg, ui)
+	for id := 1; id < 13; id++ {
+		uilx[id] = append(uilx[id], "本命")
+	}
+}
+//////////////////////////////////////////////////////////////////////

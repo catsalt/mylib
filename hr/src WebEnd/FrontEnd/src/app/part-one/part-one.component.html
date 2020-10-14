@@ -1,0 +1,159 @@
+<app-main [outZhuX]="outZhuX" [outLiuX]="outLiuX">
+</app-main>
+
+
+<!-- <div>{{diagnostic}}</div> -->
+
+<div class="level21">
+
+  <div class="level26">
+    <br>
+    <label for="">命例: </label>
+    <button type="button" (click)="prevHeroInfo()">下一个</button>
+    <button type="button" (click)="nextHeroInfo()">上一个</button>
+    <button type="button" (click)="saveHeroInfo()" [disabled]="!formZero.form.valid">保存 | 确认</button>
+  </div>
+  <div class="level27">
+    <br>
+    <button type="button" (click)="getZhuX()" [disabled]="!formZero.form.valid">排基础盘</button>
+    <button type="button" (click)="getLiuX()" [disabled]="check">排流年盘</button>
+    <button type="button" (click)="nowTime()">现在时间</button>
+  </div>
+
+
+
+  <form (submit)="onSubmit()" #formZero="ngForm">
+    <div class="level22">
+
+      <br>
+      <label for="xingMing">姓名: </label>
+      <input required type="text" [(ngModel)]="hi.xingMing" name="xingMing" value="demo" style="width: 6em">
+      <br>
+      <label for="xingBie">性别: </label>
+      <select type="text" [(ngModel)]="hi.xingBie" name="xingBie" style="width: 6.45em">
+        <option *ngFor="let item of xingBieS" [value]="item">{{item}}</option>
+      </select>
+      <br>
+      <label for="nian">生年: </label>
+      <input type="number" required [(ngModel)]="hi.nian" name="nian" min="1900" max="2100" class="level221">
+      <br>
+      <label for="yue">生月: </label>
+      <input type="number" required [(ngModel)]="hi.yue" name="yue" min="1" max="12" class="level221">
+      <br>
+      <label for="ri">生日: </label>
+      <input type="number" required [(ngModel)]="hi.ri" name="ri" min="1" max="31" class="level221">
+      <br>
+      <label for="shi">生时: </label>
+      <input type="number" required [(ngModel)]="hi.shi" name="shi" min="1" max="24" class="level221">
+
+    </div>
+  </form>
+
+  <form (submit)="onSubmit()" #formOne='ngForm'>
+    <div class="level23">
+
+      <br>
+      <label for="">输出: </label>
+      <select [(ngModel)]="lni.outPut6" name="outPut6" class="level231">
+        <option *ngFor="let item of yunLiuS" [value]="item">{{item}}</option>
+      </select>
+      <br>
+      <label for="">输出: </label>
+      <select [(ngModel)]="lni.outPut5" name="outPut5" class="level231">
+        <option *ngFor="let item of yunLiuS" [value]="item">{{item}}</option>
+      </select>
+      <br>
+      <label for="">输出: </label>
+      <select [(ngModel)]="lni.outPut4" name="outPut4" class="level231">
+        <option *ngFor="let item of yunLiuS" [value]="item">{{item}}</option>
+      </select>
+      <br>
+      <label for="">输出: </label>
+      <select [(ngModel)]="lni.outPut3" name="outPut3" class="level231">
+        <option *ngFor="let item of yunLiuS" [value]="item">{{item}}</option>
+      </select>
+      <br>
+      <label for="">输出: </label>
+      <select [(ngModel)]="lni.outPut2" name="outPut2" class="level231">
+        <option *ngFor="let item of yunLiuS" [value]="item">{{item}}</option>
+      </select>
+      <br>
+      <label for="">输出: </label>
+      <select [(ngModel)]="lni.outPut1" name="outPut1" class="level231">
+        <option *ngFor="let item of yunLiuS" [value]="item">{{item}}</option>
+      </select>
+
+    </div>
+  </form>
+
+  <form (submit)="onSubmit()" #formTwo='ngForm'>
+    <div class="level24">
+
+      <br>
+      <label for="liuShi">流时: </label>
+      <button (click)="reduceOneShi()">(-1)</button>
+      <input type="number" [(ngModel)]="lni.liuShi" name="liuShi" class="level241" disabled>
+      <button (click)="addOneShi()">(+1)</button>
+      <br>
+      <label for="liuRi">流日: </label>
+      <button (click)="reduceOneDay()">(-1)</button>
+      <input type="number" [(ngModel)]="lni.liuRi" name="liuRi" class="level241" disabled>
+      <button (click)="addOneDay()">(+1)</button>
+      <br>
+      <label for="liuYue">流月: </label>
+      <button (click)="reduceOneMonth()">(-1)</button>
+      <input type="number" [(ngModel)]="lni.liuYue" name="liuYue" class="level241" disabled>
+      <button (click)="addOneMonth()">(+1)</button>
+      <br>
+      <label for="liuNian">流年: </label>
+      <button (click)="reduceOneYear()">(-1)</button>
+      <input type="number" [(ngModel)]="lni.liuNian" name="liuNian" class="level241" disabled>
+      <button (click)="addOneYear()">(+1)</button>
+      <br>
+      <label for="daYun">大运: </label>
+      <button (click)="reduceTenYear()">(-1)</button>
+      <input type="number" [(ngModel)]="daYun" name="daYun" class="level241" disabled>
+      <button (click)="addTenYear()">(+1)</button>
+      <br>{{ltime}}{{test}}
+
+    </div>
+  </form>
+
+
+  <form (submit)="onSubmit()" #formThree='ngForm'>
+    <div class="level25">
+
+      <br>
+      <button (click)="nextGong6()">顺旋</button>
+      <input type="text" [(ngModel)]="lni.huaGong6" name="huaGong6" class="level251">
+      <label for="">宫干化</label>
+      <button (click)="prevGong6()">逆旋</button>
+      <br>
+      <button (click)="nextGong5()">顺旋</button>
+      <input type="text" [(ngModel)]="lni.huaGong5" name="huaGong5" class="level251">
+      <label for="">宫干化</label>
+      <button (click)="prevGong5()">逆旋</button>
+      <br>
+      <button (click)="nextGong4()">顺旋</button>
+      <input type="text" [(ngModel)]="lni.huaGong4" name="huaGong4" class="level251">
+      <label for="">宫干化</label>
+      <button (click)="prevGong4()">逆旋</button>
+      <br>
+      <button (click)="nextGong3()">顺旋</button>
+      <input type="text" [(ngModel)]="lni.huaGong3" name="huaGong3" class="level251">
+      <label for="">宫干化</label>
+      <button (click)="prevGong3()">逆旋</button>
+      <br>
+      <button (click)="nextGong2()">顺旋</button>
+      <input type="text" [(ngModel)]="lni.huaGong2" name="huaGong2" class="level251">
+      <label for="">宫干化</label>
+      <button (click)="prevGong2()">逆旋</button>
+      <br>
+      <button (click)="nextGong1()">顺旋</button>
+      <input type="text" [(ngModel)]="lni.huaGong1" name="huaGong1" class="level251">
+      <label for="">宫干化</label>
+      <button (click)="prevGong1()">逆旋</button>
+
+    </div>
+  </form>
+</div>

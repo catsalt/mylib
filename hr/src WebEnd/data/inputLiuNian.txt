@@ -1,0 +1,1 @@
+{"outPut1":"本命","huaGong1":"原","outPut2":"大运","huaGong2":"原","outPut3":"流年","huaGong3":"原","outPut4":"流月","huaGong4":"原","outPut5":"流日","huaGong5":"原","outPut6":"流时","huaGong6":"原","siHua":"中州","liuNian":2019,"liuYue":9,"liuRi":16,"liuShi":23}

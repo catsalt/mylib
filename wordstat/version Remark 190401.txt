@@ -1,0 +1,40 @@
+﻿todo:
+将带-符号的组合词单列, 根据单词列表区分为组合单词或者是换行词; 或者人工识别;
+将UI换成Fyne;
+
+
+20190255:
+v2, Go UI; "github.com/andlabs/ui"
+	_ "github.com/andlabs/ui/winmanifest"
+按频率, 音节分类词汇; 内部采用并发统计模式;
+按 GradeList 分级词汇; 内部采用BaseWord, FamilyWord对比模式;
+
+20190228: v1.1
+更换目录名Xgui 为, Xstat;
+sS.go,
+gSsyll() 修改, 补上并发同步, 增加按某个数量, 如100个单词分割输出文档;
+gSsyllA() 不按50单词分割输出文档;
+
+20190302: v1.2
+sS.go,
+gSsyll(), ZsGrade() 修改, 单词输出文件命名;
+
+20190304: v2
+sS.go,
+pSequal() 修改, 增加"LY"后缀的判断;
+corE.go,
+增加处理Cambridge,和BNC COCA25k的功能;
+ioFile.go,
+增加批量修改文件名, hFtoRnFiles();
+
+20190310: v2.1
+corE.go,
+重新设计Cambridge的功能, 根据已有WordList 分割字典源文件; 根据源文件分成有有词组(Relate)和Isolate, 再按Pos 输出列表;
+sS.go, 更名为Stat.go
+aSpick, 直接用string, 不再用[]Rune, 以便统一ioFile.go的Function; 
+main.go 界面增加选择框, 分组, 清洗与否, stat.go 相应的Function, 都增加分组group,清洗tidy的输入参数; 这样更加灵活;
+
+20190401: v2.2
+corE.go,
+ZsGrade(),cSstat(), 对空文件名过滤;否则onlyA 输出异常;
+
